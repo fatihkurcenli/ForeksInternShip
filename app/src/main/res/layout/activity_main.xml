@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/fl_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
+        />
+
+    <com.gauravk.bubblenavigation.BubbleNavigationConstraintView
+        android:id="@+id/bubbleNavigationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/purple_200"
+        android:elevation="18dp">
+
+        <com.gauravk.bubblenavigation.BubbleToggleView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bt_colorActive="@color/purple_700"
+            app:bt_colorInactive="@color/white"
+            app:bt_icon="@drawable/ic_home"
+            app:bt_shape="@drawable/transition_background_drawable"
+            app:bt_title="Home"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <com.gauravk.bubblenavigation.BubbleToggleView
+            android:id="@+id/favorite_for_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bt_colorActive="@color/purple_700"
+            app:bt_colorInactive="@color/white"
+            app:bt_icon="@drawable/ic_favorite"
+            app:bt_shape="@drawable/transition_background_drawable"
+            app:bt_title="Favorite"
+            app:layout_constraintHorizontal_weight="1" />
+
+
+    </com.gauravk.bubblenavigation.BubbleNavigationConstraintView>
+
+
+</RelativeLayout>
