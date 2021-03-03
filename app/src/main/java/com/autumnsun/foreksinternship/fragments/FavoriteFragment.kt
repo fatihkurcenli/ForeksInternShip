@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,9 @@ import com.autumnsun.foreksinternship.model.MoneyVariable
 import com.autumnsun.foreksinternship.service.ApiClient
 import com.autumnsun.foreksinternship.utils.gone
 import com.autumnsun.foreksinternship.utils.visible
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +36,8 @@ class FavoriteFragment : Fragment() {
     private lateinit var favoriteList: ArrayList<FavoriteModel>
     private lateinit var adapter: FavoriteAdapter
     private lateinit var selectedData: List<MoneyVariable>
+    private var selectedNumberFavorite: Int = 0
+    private var isOnFavorite: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,20 +58,20 @@ class FavoriteFragment : Fragment() {
         )
         selectedData = mutableListOf()
         //binding.progressBarFavorite.visible()
-        adapter = FavoriteAdapter(mutableListOf(), 0) {
+        adapter = FavoriteAdapter(mutableListOf(), selectedNumberFavorite) {
         }
         /* { textView ->
                 onUserClickListener(
                     textView
                 )*/
 
-        getFavoriteData(0)
+        getFavoriteData(selectedNumberFavorite)
         binding.recyclerViewFavorite.adapter = adapter
         return binding.root
     }
 
 
-    private fun getFavoriteData(selectedNumberFromMenu: Int) {
+    private fun getFavoriteData(selectedNumberFavorite: Int) {
         apiService.getData().enqueue(object : Callback<MoneyData> {
             override fun onFailure(call: Call<MoneyData>, t: Throwable) {
                 Log.e("mainactivity", t.message.toString())
@@ -76,7 +82,7 @@ class FavoriteFragment : Fragment() {
                 if (response.isSuccessful && response.body() !== null) {
                     response.body()?.let { body ->
                         adapter.favoriteData = body.moneyVariableList
-                        adapter.selectedNumberFromMenu = selectedNumberFromMenu
+                        adapter.selectedNumberFromMenu = selectedNumberFavorite
                         perStateCode = body.moneyVariableList.groupBy {
                             it.codKod
                         }
@@ -107,6 +113,49 @@ class FavoriteFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        isOnFavorite = true
+        GlobalScope.launch {
+            while (isOnFavorite) {
+                getFavoriteData(selectedNumberFavorite)
+                delay(2000L)
+            }
+        }
+    }
+
+    override fun onStop() {
+        isOnFavorite = false
+        super.onStop()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.spinnerFavorite.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    Toast.makeText(context, "Seçim edilmedi", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    when (position) {
+                        0 -> selectedNumberFavorite = 0
+                        1 -> selectedNumberFavorite = 1
+                        2 -> selectedNumberFavorite = 2
+                        3 -> selectedNumberFavorite = 3
+                        4 -> selectedNumberFavorite = 4
+                    }
+                }
+
+            }
     }
 
 

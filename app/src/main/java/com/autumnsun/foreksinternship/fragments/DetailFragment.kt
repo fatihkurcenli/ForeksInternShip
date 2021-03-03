@@ -2,11 +2,11 @@ package com.autumnsun.foreksinternship.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.autumnsun.foreksinternship.R
@@ -16,20 +16,32 @@ import com.autumnsun.foreksinternship.db.FavoriteRepository
 import com.autumnsun.foreksinternship.model.DetailModel
 import com.autumnsun.foreksinternship.model.GraphModelItem
 import com.autumnsun.foreksinternship.service.ApiClient
+import com.autumnsun.foreksinternship.utils.MyValueFormatter
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DetailFragment(context: HomeFragment) : Fragment() {
     private lateinit var binding: FragmentDetailBinding
+    private lateinit var mLineChart: LineChart
+    private var entries = java.util.ArrayList<Entry>()
     private val apiService by lazy { ApiClient.getApiService() }
     private var gettingCode: String? = null
     private val model: HomeFragmentViewModel by activityViewModels()
@@ -54,27 +66,69 @@ class DetailFragment(context: HomeFragment) : Fragment() {
 
     private fun setLineChartData(graphItem: List<GraphModelItem>) {
         val linevalues = ArrayList<Entry>()
+        /*        val xValsDateLabel = ArrayList<String>()
+        val xValsOrginalDate = ArrayList<Long>()
+        xValsOrginalDate.add(1554875423736L)
+        xValsOrginalDate.add(1555275494836L)
+        xValsOrginalDate.add(1585578525900L)
+        xValsOrginalDate.add(1596679626245L)
+        xValsOrginalDate.add(1609990727820L)*/
+
         for (i in graphItem.indices) {
             linevalues.add(Entry(graphItem[i].d.toFloat(), graphItem[i].c.toFloat()))
         }
 
-        val linedataset = LineDataSet(linevalues, "deneme")
+        val set1 = LineDataSet(linevalues, codingLifeCode)
         //We add features to our chart
-        linedataset.color = resources.getColor(R.color.purple_200)
+        set1.color = resources.getColor(R.color.purple_200)
 
         //  linedataset.circleRadius = 10f
-        linedataset.setDrawFilled(true)
-        linedataset.valueTextSize = 10F
-        linedataset.fillColor = resources.getColor(R.color.green)
-        linedataset.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
+        set1.setDrawFilled(true)
+        set1.valueTextSize = 10F
+        set1.fillColor = resources.getColor(R.color.green)
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        var dataSet = ArrayList<ILineDataSet>()
+        dataSet.add(set1)
         //We connect our data to the UI Screen
-        val data = LineData(linedataset)
+        val data = LineData(dataSet)
+        mLineChart = binding.getTheGraph
+
+        binding.getTheGraph.legend.isEnabled = false
+        binding.getTheGraph.invalidate()
+        binding.getTheGraph.axisRight.isEnabled = false
+        binding.getTheGraph.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        binding.getTheGraph.axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         binding.getTheGraph.data = data
+        binding.getTheGraph.xAxis.granularity = 1f
+        binding.getTheGraph.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        binding.getTheGraph.xAxis.setDrawGridLines(false)
+        binding.getTheGraph.xAxis.isGranularityEnabled = true
+        //binding.getTheGraph.xAxis.valueFormatter = MyValueFormatter(xValsDateLabel)
+        binding.getTheGraph.xAxis.textSize = 10f
+
+
         binding.getTheGraph.setBackgroundColor(resources.getColor(R.color.white))
         binding.getTheGraph.animateXY(2000, 2000, Easing.EaseInCubic)
+        /* mLineChart.description.text = ""
+         mLineChart.legend.isEnabled = false
+         mLineChart.invalidate()
+         mLineChart.axisRight.isEnabled = false
+         mLineChart.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+         mLineChart.axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+
+
+         val xAxis = mLineChart.xAxis
+         xAxis.position = XAxis.XAxisPosition.BOTTOM
+         xAxis.setDrawGridLines(false)
+         xAxis.labelCount = 4
+         xAxis.granularity = 1f
+         xAxis.isGranularityEnabled = true
+
+         xAxis.valueFormatter = (MyValueFormatter(xValsDateLabel))*/
 
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
