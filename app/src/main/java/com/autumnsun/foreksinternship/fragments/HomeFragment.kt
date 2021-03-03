@@ -125,9 +125,10 @@ class HomeFragment(context: Context) : Fragment() {
                         perStateCode = body.moneyVariableList.groupBy {
                             it.codKod
                         }
-                        /*if (perStateCode.containsKey("AAVEUSD")) {
+                        Log.d("MainActivity", perStateCode.toString())
+                        if (perStateCode.containsKey("AAVEUSD")) {
                             Log.d("MainActivity", perStateCode.get("AAVEUSD").toString())
-                        } */
+                        }
                         //adapter.onUserClickListener = this::onUserClickListener
                         adapter.notifyDataSetChanged()
                         binding.progressBar.gone()

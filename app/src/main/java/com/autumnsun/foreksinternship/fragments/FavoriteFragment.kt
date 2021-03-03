@@ -1,16 +1,37 @@
 package com.autumnsun.foreksinternship.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.autumnsun.foreksinternship.R
+import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.autumnsun.foreksinternship.adapter.FavoriteAdapter
 import com.autumnsun.foreksinternship.databinding.FragmentFavoriteBinding
+import com.autumnsun.foreksinternship.db.FavoriteModel
+import com.autumnsun.foreksinternship.db.FavoriteRepository
+import com.autumnsun.foreksinternship.model.MoneyData
+import com.autumnsun.foreksinternship.model.MoneyVariable
+import com.autumnsun.foreksinternship.service.ApiClient
+import com.autumnsun.foreksinternship.utils.gone
+import com.autumnsun.foreksinternship.utils.visible
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class FavoriteFragment : Fragment() {
+    private lateinit var perStateCode: Map<String, List<MoneyVariable>>
+    private val apiService by lazy { ApiClient.getApiService() }
     private lateinit var binding: FragmentFavoriteBinding
+    private lateinit var favoriteRepository: FavoriteRepository
+    private lateinit var favoriteList: ArrayList<FavoriteModel>
+    private lateinit var adapter: FavoriteAdapter
+    private lateinit var selectedData: List<MoneyVariable>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,7 +40,73 @@ class FavoriteFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentFavoriteBinding.inflate(layoutInflater)
         //inflater.inflate(R.layout.fragment_favorite, container, false)
+        favoriteRepository = FavoriteRepository(binding.root.context)
+        favoriteList = favoriteRepository.getAllFavorite()
+        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewFavorite.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+        selectedData = mutableListOf()
+        //binding.progressBarFavorite.visible()
+        adapter = FavoriteAdapter(mutableListOf(), 0) {
+        }
+        /* { textView ->
+                onUserClickListener(
+                    textView
+                )*/
+
+        getFavoriteData(0)
+        binding.recyclerViewFavorite.adapter = adapter
         return binding.root
+    }
+
+
+    private fun getFavoriteData(selectedNumberFromMenu: Int) {
+        apiService.getData().enqueue(object : Callback<MoneyData> {
+            override fun onFailure(call: Call<MoneyData>, t: Throwable) {
+                Log.e("mainactivity", t.message.toString())
+            }
+
+            override fun onResponse(call: Call<MoneyData>, response: Response<MoneyData>) {
+                Log.d("favoriteResponse", response.body()?.moneyVariableList?.size.toString())
+                if (response.isSuccessful && response.body() !== null) {
+                    response.body()?.let { body ->
+                        adapter.favoriteData = body.moneyVariableList
+                        adapter.selectedNumberFromMenu = selectedNumberFromMenu
+                        perStateCode = body.moneyVariableList.groupBy {
+                            it.codKod
+                        }
+                        var list = ArrayList<MoneyVariable>()
+                        for (i in 0 until favoriteList.size) {
+                            if (perStateCode.keys.contains(favoriteList[i].favorite)) {
+                                perStateCode[favoriteList[i].favorite]?.get(0)?.let { list.add(it) }
+                                Log.d("cikti", list.toString())
+                                /*perStateCode[favoriteList[i].favorite]?.get(i).let {
+                                    it?.let { it1 -> listeninde.add(it1) }
+
+                                }*/
+                            }
+                        }
+                        adapter.favoriteData = list
+                        adapter.notifyDataSetChanged()
+                        //adapter.onUserClickListener = this::onUserClickListener
+                        adapter.notifyDataSetChanged()
+                        binding.progressBarFavorite.gone()
+                        binding.recyclerViewFavorite.visible()
+                    }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Something went Wrong. Try again !! ",
+                        Toast.LENGTH_LONG
+                    )
+                }
+            }
+        })
     }
 
 

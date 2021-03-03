@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.autumnsun.foreksinternship.R
 import com.autumnsun.foreksinternship.databinding.FragmentDetailBinding
+import com.autumnsun.foreksinternship.db.FavoriteModel
+import com.autumnsun.foreksinternship.db.FavoriteRepository
 import com.autumnsun.foreksinternship.model.DetailModel
 import com.autumnsun.foreksinternship.model.GraphModelItem
 import com.autumnsun.foreksinternship.service.ApiClient
@@ -32,7 +34,8 @@ class DetailFragment(context: HomeFragment) : Fragment() {
     private var gettingCode: String? = null
     private val model: HomeFragmentViewModel by activityViewModels()
     private var isDetailGame: Boolean = true
-
+    private lateinit var favoriteRepository: FavoriteRepository
+    private lateinit var codingLifeCode: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +45,8 @@ class DetailFragment(context: HomeFragment) : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentDetailBinding.inflate(layoutInflater)
         //return inflater.inflate(R.layout.fragment_detail, container, false)
-
+        favoriteRepository = FavoriteRepository(binding.root.context)
+        codingLifeCode = ""
         binding.itemName.text = gettingCode.toString()
         return binding.root
     }
@@ -79,20 +83,33 @@ class DetailFragment(context: HomeFragment) : Fragment() {
             Observer { item ->
                 binding.itemName.text = item.toString()
                 getGraphDataFromApi(item as String)
-                getDetailApi(item as String)
-
+                getDetailApi(item)
+                codingLifeCode = item
             })
+
+
+        binding.imageButton.setOnClickListener() {
+            val rowId = favoriteRepository.insterFavorite(
+                FavoriteModel(favorite = codingLifeCode)
+            )
+            if (rowId > -1) {
+                Toast.makeText(context, "Eklendi", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Ekleme başarısız", Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
 
     override fun onStart() {
         isDetailGame = true
-        model.message.observe(viewLifecycleOwner, Observer {
-            started-> GlobalScope.launch {
-            while (isDetailGame) {
-                getDetailApi(started as String)
-                delay(2000L)
+        model.message.observe(viewLifecycleOwner, Observer { started ->
+            GlobalScope.launch {
+                while (isDetailGame) {
+                    getDetailApi(started as String)
+                    delay(2000L)
+                }
             }
-        }
 
         })
 
