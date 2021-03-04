@@ -1,6 +1,5 @@
 package com.autumnsun.foreksinternship.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,11 +19,13 @@ import com.autumnsun.foreksinternship.service.ApiClient
 import com.autumnsun.foreksinternship.utils.MyValueFormatter
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -32,10 +33,14 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.math.sign
 
 
-class DetailFragment() : Fragment() {
+class DetailFragment : Fragment() {
     private lateinit var binding: FragmentDetailBinding
     private lateinit var mLineChart: LineChart
     private var entries = java.util.ArrayList<Entry>()
@@ -63,85 +68,44 @@ class DetailFragment() : Fragment() {
 
 
     private fun setLineChartData(graphItem: List<GraphModelItem>) {
-        /* val linevalues = ArrayList<Entry>()
-         for (i in graphItem.indices) {
-             linevalues.add(Entry(graphItem[i].d.toFloat(), graphItem[i].c.toFloat()))
-         }
-
-         val set1 = LineDataSet(linevalues, codingLifeCode)
-         //We add features to our chart
-         set1.color = resources.getColor(R.color.purple_200)
-
-         //  linedataset.circleRadius = 10f
-
-         set1.setDrawFilled(true)
-         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
-         set1.valueTextSize = 10F
-         set1.fillColor = resources.getColor(R.color.green)
-         var dataSet = java.util.ArrayList<ILineDataSet>()
-         dataSet.add(set1)
-         //We connect our data to the UI Screen
-         val data = LineData(dataSet)
-         binding.getTheGraph.data = data
-         binding.getTheGraph.legend.isEnabled = false
-         binding.getTheGraph.invalidate()
-         binding.getTheGraph.axisRight.isEnabled = false
-         binding.getTheGraph.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-         binding.getTheGraph.axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-         binding.getTheGraph.setBackgroundColor(resources.getColor(R.color.white))
-         binding.getTheGraph.animateXY(2000, 2000, Easing.EaseInCubic) */
-
         for (i in graphItem.indices) {
             entries.add(Entry(graphItem[i].d.toFloat(), graphItem[i].c.toFloat()))
         }
-
-        val set1 = LineDataSet(entries, codingLifeCode)
+        val set1 = LineDataSet(entries, codingLifeCode.toString())
         set1.fillAlpha = 110
         mLineChart = binding.getTheGraph
         set1.setDrawFilled(true)
         set1.valueTextSize = 10F
         set1.fillColor = resources.getColor(R.color.green)
-
         var dataSet = java.util.ArrayList<ILineDataSet>()
         dataSet.add(set1)
-
         val lineData = LineData(dataSet)
         mLineChart.data = lineData
         set1.color = resources.getColor(R.color.purple_200)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         mLineChart.legend.isEnabled = false
         mLineChart.invalidate()
-        mLineChart.axisRight.isEnabled = false
+        mLineChart.description.text = codingLifeCode
         mLineChart.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         mLineChart.axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         mLineChart.setBackgroundColor(resources.getColor(R.color.white))
         mLineChart.animateXY(2000, 2000, Easing.EaseInCubic)
-
-
         val xAxis = mLineChart.xAxis
         val legend = mLineChart.legend
         legend.textSize = 20f
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
-        // xAxis.labelCount = 4
-        // xAxis.granularity = 1f
-        // xAxis.isGranularityEnabled = true
-        xAxis.setLabelCount(0)
+        xAxis.setLabelCount(4)
         val xValsDateLabel = ArrayList<String>()
         for (i in graphItem.indices) {
             val sdf = java.text.SimpleDateFormat("MM/dd/yyyy")
             val date = java.util.Date(graphItem[i].d)
-            val deneme: String = sdf.format(date)
-            Log.d("zaman", deneme)
-            xValsDateLabel.add(deneme)
+            val stringDate: String = sdf.format(date)
+            Log.d("zaman", stringDate)
+            xValsDateLabel.add(stringDate)
         }
-        //var sonlast = xValsDateLabel.takeLast(3) as ArrayList<String>
-        Log.d("son10", graphItem.size.toString())
-
-        Log.d("son10", xValsDateLabel.size.toString())
-        xAxis.valueFormatter = (MyValueFormatter(xValsDateLabel))
-
-
+        //xAxis.valueFormatter = (MyValueFormatter(xValsDateLabel))
+        xAxis.setValueFormatter(MyValueFormatter(graphItem, xValsDateLabel))
     }
 
 
