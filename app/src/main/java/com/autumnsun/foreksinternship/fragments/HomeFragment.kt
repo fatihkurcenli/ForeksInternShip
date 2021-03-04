@@ -149,7 +149,7 @@ class HomeFragment(context: Context) : Fragment() {
     private fun onUserClickListener(sharedStringCode: String) {
         Log.d("recycler_verisi", sharedStringCode)
         model.setMsgCommunicator(sharedStringCode)
-        val detailFragment = DetailFragment(this)
+        val detailFragment = DetailFragment()
         fragmentManager?.beginTransaction()
             ?.replace(
                 R.id.fl_main, detailFragment
