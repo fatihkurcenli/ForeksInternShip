@@ -48,6 +48,9 @@ class FavoriteFragment : Fragment() {
         //inflater.inflate(R.layout.fragment_favorite, container, false)
         favoriteRepository = FavoriteRepository(binding.root.context)
         favoriteList = favoriteRepository.getAllFavorite()
+        if (favoriteList.isNotEmpty()) {
+            binding.noFavoriteList.gone()
+        }
         binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewFavorite.addItemDecoration(
@@ -101,7 +104,6 @@ class FavoriteFragment : Fragment() {
                         adapter.notifyDataSetChanged()
                         //adapter.onUserClickListener = this::onUserClickListener
                         adapter.notifyDataSetChanged()
-                        binding.progressBarFavorite.gone()
                         binding.recyclerViewFavorite.visible()
                     }
                 } else {

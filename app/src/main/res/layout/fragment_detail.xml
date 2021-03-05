@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/kPrimaryColor"
+    android:background="@color/background"
     tools:context=".ui.detail.DetailActivity">
 
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/buyAlDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/lowDDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buyAlDetailValue" />
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/ppdYFarkDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/highYDetailValue" />
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/ddiFarkDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lowDDetailValue" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/sellSatDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lasSonDetailValue" />
@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toTopOf="@+id/highYDetailValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sellSatDetailValue" />
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="TextView"
-        android:textColor="@color/white"
+        android:textColor="@color/writee4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ddiFarkDetailValue" />
@@ -103,7 +103,7 @@
         android:layout_marginTop="8dp"
         android:text="ParaKodu"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/item_name_detail"
@@ -118,7 +118,7 @@
         android:layout_marginTop="8dp"
         android:text="ParaAçıklaması"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_name" />
@@ -128,8 +128,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@color/background"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_favorite"
+        android:src="@drawable/ic_heart"
         app:layout_constraintBottom_toTopOf="@+id/getTheGraph"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -162,6 +163,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:textColor="@color/writee2"
                 android:text="Canlı Veri"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -176,6 +178,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
+                android:textColor="@color/writee2"
                 android:text="saatDeğeri"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -192,7 +195,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Son değer"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/buyAlDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
@@ -203,7 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Alış"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/sellSatDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lasSonDetail" />
@@ -214,7 +217,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Satış"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/lowDDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buyAlDetail" />
@@ -225,7 +228,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="G. Düşük"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/highYDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sellSatDetail" />
@@ -236,7 +239,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="G. Yüksek"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/ddiFarkDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lowDDetail" />
@@ -247,7 +250,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="Fark"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toTopOf="@+id/ppdYFarkDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/highYDetail" />
@@ -258,7 +261,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:text="% Fark"
-        android:textColor="@color/white"
+        android:textColor="@color/writee2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ddiFarkDetail" />

@@ -3,13 +3,14 @@ package com.autumnsun.foreksinternship.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.util.Log
 import com.autumnsun.foreksinternship.fragments.FavoriteFragment
 
 class FavoriteRepository(var context: Context) {
     private var mDBHelper: DBHelper = DBHelper.getInstance(context)
+    private var list = ArrayList<FavoriteModel>()
 
     fun getAllFavorite(): ArrayList<FavoriteModel> {
-        var list = ArrayList<FavoriteModel>()
         val db = mDBHelper.readableDatabase
         val query = "SELECT ${DBHelper.KEY_ID}, ${DBHelper.KEY_NAME} FROM ${DBHelper.TABLE_NAME}"
         val cursor: Cursor = db.rawQuery(query, null)

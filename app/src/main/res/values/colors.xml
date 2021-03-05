@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_200">#F2ECFF</color>
+    <color name="purple_500">#FF8D8D8D</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
@@ -10,4 +10,13 @@
     <color name="kPrimaryColor">#273250</color>
     <color name="green">#00BD8A</color>
     <color name="splashscreen">#5b5b5b</color>
+    <color name="background">#6A8187</color>
+    <color name="background2">#95a8ad</color>
+    <color name="data_item">#6A8187</color>
+    <color name="writee">#FAF7FF</color>
+    <color name="writee2">#F59B88</color>
+    <color name="writee3">#F9F871</color>
+    <color name="writee4">#FFC473</color>
+    <color name="graphItem">#00C896</color>
+
 </resources>

@@ -157,20 +157,6 @@ class HomeFragment(context: Context) : Fragment() {
             ?.addToBackStack(null)
             ?.commit()
 
-
-        /* val intent = Intent(this, DetailActivity::class.java)
-         intent.putExtra(EXTRA_RESULT_ITEM, moneyData)
-         val option = ActivityOptionsCompat.makeSceneTransitionAnimation(
-             this,
-             sharedTextView,
-             ViewCompat.getTransitionName(sharedTextView)!!
-         )
-         intent.putExtra(EXTRA_RESULT_TRANSITION_NAME, ViewCompat.getTransitionName(sharedTextView))
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-             startActivity(intent, option.toBundle())
-         } else {
-             startActivity(intent)
-         }*/
     }
 
 }

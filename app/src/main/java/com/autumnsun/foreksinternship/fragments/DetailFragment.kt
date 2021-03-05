@@ -51,7 +51,7 @@ class DetailFragment : Fragment() {
     private lateinit var favoriteRepository: FavoriteRepository
     private lateinit var codingLifeCode: String
     private var graphJustOne: Boolean = true
-
+    private var rowId: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,12 +71,14 @@ class DetailFragment : Fragment() {
         for (i in graphItem.indices) {
             entries.add(Entry(graphItem[i].d.toFloat(), graphItem[i].c.toFloat()))
         }
-        val set1 = LineDataSet(entries, codingLifeCode.toString())
-        set1.fillAlpha = 110
+        val set1 = LineDataSet(entries, codingLifeCode)
+        //set1.fillAlpha = 110
+        set1.lineWidth = 1.5f
+        set1.setDrawCircles(false)
         mLineChart = binding.getTheGraph
         set1.setDrawFilled(true)
         set1.valueTextSize = 10F
-        set1.fillColor = resources.getColor(R.color.green)
+        set1.fillColor = resources.getColor(R.color.graphItem)
         var dataSet = java.util.ArrayList<ILineDataSet>()
         dataSet.add(set1)
         val lineData = LineData(dataSet)
@@ -88,7 +90,7 @@ class DetailFragment : Fragment() {
         mLineChart.description.text = codingLifeCode
         mLineChart.axisLeft.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         mLineChart.axisRight.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        mLineChart.setBackgroundColor(resources.getColor(R.color.white))
+        mLineChart.setBackgroundColor(resources.getColor(R.color.background2))
         mLineChart.animateXY(2000, 2000, Easing.EaseInCubic)
         val xAxis = mLineChart.xAxis
         val legend = mLineChart.legend
@@ -101,10 +103,8 @@ class DetailFragment : Fragment() {
             val sdf = java.text.SimpleDateFormat("MM/dd/yyyy")
             val date = java.util.Date(graphItem[i].d)
             val stringDate: String = sdf.format(date)
-            Log.d("zaman", stringDate)
             xValsDateLabel.add(stringDate)
         }
-        //xAxis.valueFormatter = (MyValueFormatter(xValsDateLabel))
         xAxis.setValueFormatter(MyValueFormatter(graphItem, xValsDateLabel))
     }
 
@@ -122,9 +122,22 @@ class DetailFragment : Fragment() {
 
 
         binding.imageButton.setOnClickListener() {
-            val rowId = favoriteRepository.insterFavorite(
-                FavoriteModel(favorite = codingLifeCode)
-            )
+            var isCorrectList = favoriteRepository.getAllFavorite()
+            var ismetAdalariVerdiVerdi = false
+            for (i in 0 until isCorrectList.size) {
+                if (isCorrectList[i].favorite.equals(codingLifeCode)) {
+                    ismetAdalariVerdiVerdi = true
+                    break
+                }
+            }
+            if (ismetAdalariVerdiVerdi) {
+                Toast.makeText(context, "Bu öğe zaten eklidir", Toast.LENGTH_LONG).show()
+            } else {
+                rowId = favoriteRepository.insterFavorite(
+                    FavoriteModel(favorite = codingLifeCode)
+                )
+            }
+
             if (rowId > -1) {
                 Toast.makeText(context, "Eklendi", Toast.LENGTH_SHORT).show()
             } else {
@@ -190,13 +203,13 @@ class DetailFragment : Fragment() {
     private fun getDetailApi(item: String) {
         apiService.getDetail(item).enqueue(object : Callback<DetailModel> {
             override fun onFailure(call: Call<DetailModel>, t: Throwable) {
-                Log.d("detailApi", "detail api error ${t.toString()}")
+                Toast.makeText(context, "Serviste bir hata oluştu", Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(call: Call<DetailModel>, response: Response<DetailModel>) {
                 if (response.isSuccessful && response.body() !== null) {
-                    Log.d("gelenveri", response.body()?.d?.size.toString())
-                    Log.d("gelenveri", item)
+                    //Log.d("gelenveri", response.body()?.d?.size.toString())
+                    //Log.d("gelenveri", item)
                     response.body()?.let { body ->
                         var detailBody = body
                         binding.lasSonDetailValue.text = detailBody.d[0].fields.las

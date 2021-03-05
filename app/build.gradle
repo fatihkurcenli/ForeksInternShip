@@ -22,6 +22,9 @@ android {
     }
 
     buildTypes {
+        customDebugType {
+            debuggable = true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -71,4 +74,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
 
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
+
+    //LottieFile
+    implementation "com.airbnb.android:lottie:3.4.0"
 }

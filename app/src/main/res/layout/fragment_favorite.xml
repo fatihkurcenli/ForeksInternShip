@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background2"
     tools:context=".fragments.HomeFragment">
 
 
@@ -18,16 +19,18 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 
-    <ProgressBar
-        android:id="@+id/progressBarFavorite"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noFavoriteList"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        app:lottie_rawRes="@raw/not"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFavorite"/>
 
     <Spinner
         android:id="@+id/spinnerFavorite"
