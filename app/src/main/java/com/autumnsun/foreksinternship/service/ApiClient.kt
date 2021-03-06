@@ -1,10 +1,10 @@
 package com.autumnsun.foreksinternship.service
 
+import com.autumnsun.foreksinternship.const.DbConstants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private const val BASE_URL = "http://www.aslinda.net/coin/"
 
     fun getApiService(): ApiService {
         val retrofit = Retrofit.Builder()
