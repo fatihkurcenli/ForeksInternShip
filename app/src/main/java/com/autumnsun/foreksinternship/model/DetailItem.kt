@@ -3,7 +3,7 @@ package com.autumnsun.foreksinternship.model
 
 import com.google.gson.annotations.SerializedName
 
-data class D(
+data class DetailItem(
     @SerializedName("clo")
     val clo: String,
     @SerializedName("desc")
