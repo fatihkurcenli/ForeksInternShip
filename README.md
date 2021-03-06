@@ -22,7 +22,7 @@
 - [x] [Retrofit](https://square.github.io/retrofit/)
 - [x] [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 - [x] [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
-- [x] [LiveData](hhttps://developer.android.com/topic/libraries/architecture/livedata)
+- [x] [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 - [x] [Lottie](https://lottiefiles.com/)
 
 

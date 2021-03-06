@@ -123,14 +123,14 @@ class DetailFragment : Fragment() {
 
         binding.imageButton.setOnClickListener() {
             var isCorrectList = favoriteRepository.getAllFavorite()
-            var ismetAdalariVerdiVerdi = false
+            var isAddedFavoriteList = false
             for (i in 0 until isCorrectList.size) {
                 if (isCorrectList[i].favorite.equals(codingLifeCode)) {
-                    ismetAdalariVerdiVerdi = true
+                    isAddedFavoriteList = true
                     break
                 }
             }
-            if (ismetAdalariVerdiVerdi) {
+            if (isAddedFavoriteList) {
                 Toast.makeText(context, "Bu öğe zaten eklidir", Toast.LENGTH_LONG).show()
             } else {
                 rowId = favoriteRepository.insterFavorite(
@@ -208,8 +208,6 @@ class DetailFragment : Fragment() {
 
             override fun onResponse(call: Call<DetailModel>, response: Response<DetailModel>) {
                 if (response.isSuccessful && response.body() !== null) {
-                    //Log.d("gelenveri", response.body()?.d?.size.toString())
-                    //Log.d("gelenveri", item)
                     response.body()?.let { body ->
                         var detailBody = body
                         binding.lasSonDetailValue.text = detailBody.d[0].fields.las
